@@ -1,0 +1,52 @@
+html, body, main {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: sans-serif;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+  list-style: none;
+}
+
+body {
+  font-family: "Helvetica";
+}
+
+main {
+  position: relative;
+}
+
+h1 {
+  margin: 50px 0px 70px 55px;
+  font-size: 40px;
+  font-weight: normal;
+}
+
+li:hover {
+  cursor: pointer;
+  background-color: gray;
+}
+
+.nav-bar {
+  display: flex;
+  border-bottom: 2px solid gray;
+}
+
+.nav-bar > li {
+  margin: 0px 15px 0px 20px;
+  padding: 10px;
+  width: 140px;
+  border: 2px solid gray;
+  border-bottom: 0px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.active {
+  background-color: lightgray;
+}

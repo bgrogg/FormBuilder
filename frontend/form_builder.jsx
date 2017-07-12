@@ -1,16 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Root = () => {
-	return (
-		<main>
-			<h1>Form Builder</h1>
+import Tab from './tab'
 
-		</main>
-	);
-};
+const Panes = [
+	{title: 'Create'},
+	{title: 'Preview'},
+	{title: 'Export'}
+];
+
+class Root extends React.Component {
+	render() {
+		return (
+			<main>
+				<h1>Form Builder</h1>
+				<Tab panes={Panes} />
+			</main>
+		);
+	}
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-	const root = document.getElementById("root");
-	ReactDOM.render(<Root/>, root);
+	ReactDOM.render(<Root/>, document.getElementById('main'));
 });
