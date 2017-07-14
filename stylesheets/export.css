@@ -1,0 +1,8 @@
+.export-json {
+  vertical-align: top;
+  font-size: 26px;
+  width: 900px;
+  height: 300px;
+  margin: 55px 0px 0px 25px;
+  border: 2px solid gray;
+}

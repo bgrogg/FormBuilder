@@ -11,31 +11,31 @@ export default class Question extends React.Component {
     this.setState({ answer: e.currentTarget.value });
   }
 
-  renderField() {
+  renderResponse() {
     const time = new Date().getTime();
 
-    if (this.props.type === "Yes/No") {
+    if (this.props.type === "Yes / No") {
       return <div>
         <label className="preview-label">
           <input
             className="preview-radio"
             type="radio"
             name={ time }
-            value="Yes"
+            defaultValue="Yes"
             onClick={ this.handleChange }
           ></input>
           Yes
         </label>
-        <labeL className="preview-label">
+        <label className="preview-label">
           <input
             className="preview-radio"
             type="radio"
             name={ time }
-            value="No"
+            defaultValue="No"
             onClick={ this.handleChange }
           ></input>
           No
-        </labeL>
+        </label>
       </div>;
 
     } else {
@@ -86,7 +86,7 @@ export default class Question extends React.Component {
         <div>
           { this.props.question }
         </div>
-          { this.renderField.bind(this)() }
+          { this.renderResponse.bind(this)() }
           { this.renderSubQuestion.bind(this)() }
       </section>
     );
