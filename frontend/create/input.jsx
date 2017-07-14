@@ -41,12 +41,10 @@ export default class Input extends React.Component {
 
     localStorage.setItem('form', JSON.stringify(form));
     this.setState( form[inputIdx] );
-
-    // const { type, question, subInputs } = form[inputIdx];
   }
 
+  //adds sub-input into localStorage and state
   addSubInput() {
-    const form = JSON.parse(localStorage.getItem('form'));
     const subInputsKeys = Object.keys(this.state.subInputs);
     const prevSubInputIdx = subInputsKeys[subInputsKeys.length - 1]
     const subInputIdx = parseInt(prevSubInputIdx) + 1 || 0;
@@ -59,39 +57,44 @@ export default class Input extends React.Component {
       subInputs: {}
     };
 
+    const form = JSON.parse(localStorage.getItem('form'));
     form[this.props.inputIdx].subInputs[subInputIdx] = subInputs[subInputIdx];
     localStorage.setItem('form', JSON.stringify(form));
     this.setState({ subInputs });
 
   }
 
-  renderSubInputs() {
-    const subInputs = this.state.subInputs;
-    return Object.keys(subInputs).map(k => (
-      <SubInput
-        key={ k }
-        ancestor={ [this.props.inputIdx, k] }
-        condition={ subInputs[k].condition }
-        question={ subInputs[k].question }
-        type={ subInputs[k].type }
-        subInputs={ subInputs[k].subInputs }
-        deleteSubInput={ this.deleteChild.bind(this) }
-      />
-    ));
-  }
-
+  //deletes input and resets state
   deleteSubInput() {
     const form = JSON.parse(localStorage.getItem('form'));
     delete form[this.props.inputIdx];
-    localStorage.setItem('form', JSON.stringify(form));
 
+    localStorage.setItem('form', JSON.stringify(form));
     this.props.deleteInput(form);
   }
 
+  //deletes children in ancestry path and sets state
   deleteChild(subInputIdx) {
     const subInputs = this.state.subInputs;
     delete subInputs[subInputIdx];
+
     this.setState({ subInputs });
+  }
+
+  //renders each sub-input component using 'subinput' keys as unique identifier, keeps track of ancestry via props
+  renderSubInputs() {
+    const subInputs = this.state.subInputs;
+    return Object.keys(subInputs).map(key => (
+      <SubInput
+        key={ key }
+        ancestor={ [this.props.inputIdx, key] }
+        condition={ subInputs[key].condition }
+        question={ subInputs[key].question }
+        type={ subInputs[key].type }
+        subInputs={ subInputs[key].subInputs }
+        deleteSubInput={ this.deleteChild.bind(this) }
+      />
+    ));
   }
 
   render() {

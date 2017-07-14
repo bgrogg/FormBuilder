@@ -11,12 +11,12 @@ export default class PreviewForm extends React.Component {
   }
 
   renderQuestions() {
-    return Object.keys(this.state.form).map(k => (
+    return Object.keys(this.state.form).map(key => (
       <Question
-        key={ k }
-        question={ this.state.form[k].question }
-        type={ this.state.form[k].type }
-        subInputs={ this.state.form[k].subInputs }
+        key={ key }
+        question={ this.state.form[key].question }
+        type={ this.state.form[key].type }
+        subInputs={ this.state.form[key].subInputs }
       />
     ));
   }

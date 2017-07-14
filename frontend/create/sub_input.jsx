@@ -4,15 +4,16 @@ export default class SubInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      ancestor: this.props.ancestor,
       question: this.props.question,
       condition: this.props.condition,
       type: this.props.type,
       subInputs: this.props.subInputs,
-      ancestor: this.props.ancestor,
       form: JSON.parse(localStorage.getItem('form'))
     };
-    this.handleChange = this.handleChange.bind(this);
+
     this.addSubInput = this.addSubInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.deleteSubInput = this.deleteSubInput.bind(this);
   }
 
@@ -39,13 +40,13 @@ export default class SubInput extends React.Component {
       }
 
       return form;
-
     } else {
       form[ancestor[0]].subInputs = this.handleChange(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
-    this.setState({ form });
     localStorage.setItem('form', JSON.stringify(form));
+    this.setState({ form });
+
     return form;
   }
 
@@ -56,48 +57,60 @@ export default class SubInput extends React.Component {
       const subInputIdx = parseInt(prevSubInputIdx) + 1 || 0;
       const subInputs = this.state.subInputs;
 
-      subInputs[subInputIdx] = { condition: ["Equals", ""], question: "", type: "Text", subInputs: {} };
-      this.setState({ subInputs });
+      subInputs[subInputIdx] = {
+        condition: ["Equals", ""],
+        question: "",
+        type: "Text",
+        subInputs: {}
+      };
+
       form[ancestor[0]].subInputs[subInputIdx] = subInputs[subInputIdx];
+      this.setState({ subInputs });
+
       return form;
     } else {
       form[ancestor[0]].subInputs = this.addSubInput(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
-    this.setState({ form });
     localStorage.setItem('form', JSON.stringify(form));
+    this.setState({ form });
+
     return form;
   }
 
-  deleteChild(subInputIdx) {
-    let subInputs = this.state.subInputs;
-    delete subInputs[subInputIdx];
-    this.setState({ subInputs });
-  }
 
   deleteSubInput(e, fnc, ancestor = this.state.ancestor, form = JSON.parse(localStorage.getItem('form'))) {
     if (ancestor.length === 1) {
       delete form[ancestor[0]];
       this.props.deleteSubInput(parseInt(ancestor[0]));
+
       return form;
     } else {
       form[ancestor[0]].subInputs = this.deleteSubInput(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
-    this.setState({ form });
     localStorage.setItem('form', JSON.stringify(form));
+    this.setState({ form });
+
     return form;
   }
 
+  deleteChild(subInputIdx) {
+    const subInputs = this.state.subInputs;
+    delete subInputs[subInputIdx];
+
+    this.setState({ subInputs });
+  }
+
   renderSubInputs() {
-    return Object.keys(this.state.subInputs).map(k => (
+    return Object.keys(this.state.subInputs).map(key => (
       <SubInput
-        key={ k }
-        question={ this.state.subInputs[k].question }
-        condition={ this.state.subInputs[k].condition }
-        type={ this.state.subInputs[k].type }
-        subInputs={ this.state.subInputs[k].subInputs }
-        ancestor={ this.state.ancestor.concat([k]) }
+        key={ key }
+        question={ this.state.subInputs[key].question }
+        condition={ this.state.subInputs[key].condition }
+        type={ this.state.subInputs[key].type }
+        subInputs={ this.state.subInputs[key].subInputs }
+        ancestor={ this.state.ancestor.concat([key]) }
         deleteSubInput={ this.deleteChild.bind(this) }
       />
     ));

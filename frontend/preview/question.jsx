@@ -13,69 +13,70 @@ export default class Question extends React.Component {
 
   renderResponse() {
     const time = new Date().getTime();
-
     if (this.props.type === "Yes / No") {
-      return <div>
-        <label className="preview-label">
-          <input
-            className="preview-radio"
-            type="radio"
-            name={ time }
-            defaultValue="Yes"
-            onClick={ this.handleChange }
-          ></input>
-          Yes
-        </label>
-        <label className="preview-label">
-          <input
-            className="preview-radio"
-            type="radio"
-            name={ time }
-            defaultValue="No"
-            onClick={ this.handleChange }
-          ></input>
-          No
-        </label>
-      </div>;
-
+      return (
+        <div>
+          <label className="preview-label">
+            <input
+              className="preview-radio"
+              type="radio"
+              name={ time }
+              value="Yes"
+              onClick={ this.handleChange }>
+            </input>
+            Yes
+          </label>
+          <label className="preview-label">
+            <input
+              className="preview-radio"
+              type="radio"
+              name={ time }
+              value="No"
+              onClick={ this.handleChange }>
+            </input>
+            No
+          </label>
+        </div>
+      );
     } else {
-      return <div>
-        <input
-          className="preview-response"
-          type="text"
-          onChange={ this.handleChange }
-          ></input>
-      </div>;
+      return (
+        <div>
+          <input
+            className="preview-response"
+            type="text"
+            onChange={ this.handleChange }
+            ></input>
+        </div>
+      );
     }
   }
 
   renderSubQuestion() {
     const subInputs = this.props.subInputs;
-    const conditionFulfilledIds = Object.keys(subInputs)
-      .filter(id => {
-        const condition = subInputs[id].condition;
-        let conditionFulfilled = false;
+    const unlockedQuestionIds = Object.keys(subInputs).filter(key => {
+        const condition = subInputs[key].condition[0];
+        const validResponse = subInputs[key].condition[1];
+        const answer = this.state.answer;
+        let unlocked = false;
 
-        if (condition[0] === "Less Than") {
-          conditionFulfilled =  parseInt(this.state.answer) <
-            parseInt(condition[1]);
-        } else if (condition[0] === "Greater Than") {
-          conditionFulfilled =  parseInt(this.state.answer) >
-            parseInt(condition[1]);
+        if (condition === "Less Than") {
+          unlocked =  parseInt(answer) < parseInt(validResponse);
+        } else if (condition === "Greater Than") {
+          unlocked =  parseInt(answer) > parseInt(validResponse);
         } else {
-          conditionFulfilled =  this.state.answer === condition[1];
+          unlocked = ( answer === validResponse );
         }
 
-        return conditionFulfilled;
+        return unlocked;
       }
     );
 
-    return conditionFulfilledIds.map(id => (
+    return unlockedQuestionIds.map(idx => (
       <Question
-        key={ id }
-        question={ subInputs[id].question }
-        type={ subInputs[id].type }
-        subInputs={ subInputs[id].subInputs }
+        key={ idx }
+        question={ subInputs[idx].question }
+        type={ subInputs[idx].type }
+        subInputs={ subInputs[idx].subInputs }
       />
     ));
   }
