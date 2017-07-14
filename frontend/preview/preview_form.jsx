@@ -11,7 +11,8 @@ export default class PreviewForm extends React.Component {
   }
 
   renderQuestions() {
-    return Object.keys(this.state.form).map(key => (
+    const formKeys = Object.keys(this.state.form);
+    return formKeys.map(key => (
       <Question
         key={ key }
         question={ this.state.form[key].question }

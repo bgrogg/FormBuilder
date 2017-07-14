@@ -18,7 +18,7 @@ export default class CreateForm extends React.Component {
   }
 
   //creates new input object in localStorage 'form' then updates state
-  addInput() {
+  createInput() {
     const form = JSON.parse(localStorage.getItem('form')) || this.state.form;
 
     const inputs = Object.keys(form);
@@ -60,9 +60,9 @@ export default class CreateForm extends React.Component {
       <div>
         { this.renderInputs() }
         <button
-          id="add-input"
+          id="create-input"
           className="btn"
-          onClick={ this.addInput.bind(this) }>
+          onClick={ this.createInput.bind(this) }>
           Add Input
         </button>
       </div>

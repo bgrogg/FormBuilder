@@ -24,7 +24,7 @@ class Headers extends React.Component {
         );
     });
     return (
-      <nav className='nav-bar'>
+      <nav className='tabs'>
         {headers}
       </nav>
     );

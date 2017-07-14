@@ -44,7 +44,7 @@ export default class Input extends React.Component {
   }
 
   //adds sub-input into localStorage and state
-  addSubInput() {
+  createSubInput() {
     const subInputsKeys = Object.keys(this.state.subInputs);
     const prevSubInputIdx = subInputsKeys[subInputsKeys.length - 1]
     const subInputIdx = parseInt(prevSubInputIdx) + 1 || 0;
@@ -59,9 +59,9 @@ export default class Input extends React.Component {
 
     const form = JSON.parse(localStorage.getItem('form'));
     form[this.props.inputIdx].subInputs[subInputIdx] = subInputs[subInputIdx];
+
     localStorage.setItem('form', JSON.stringify(form));
     this.setState({ subInputs });
-
   }
 
   //deletes input and resets state
@@ -84,7 +84,9 @@ export default class Input extends React.Component {
   //renders each sub-input component using 'subinput' keys as unique identifier, keeps track of ancestry via props
   renderSubInputs() {
     const subInputs = this.state.subInputs;
-    return Object.keys(subInputs).map(key => (
+    const formKeys = Object.keys(subInputs);
+
+    return formKeys.map(key => (
       <SubInput
         key={ key }
         ancestor={ [this.props.inputIdx, key] }
@@ -122,7 +124,7 @@ export default class Input extends React.Component {
           </div>
           <div className="input-btns">
             <li
-              onClick={ this.addSubInput.bind(this) }
+              onClick={ this.createSubInput.bind(this) }
               className="btn">
               Add Sub-Input
             </li>

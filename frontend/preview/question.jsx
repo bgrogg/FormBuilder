@@ -44,8 +44,8 @@ export default class Question extends React.Component {
           <input
             className="preview-response"
             type="text"
-            onChange={ this.handleChange }
-            ></input>
+            onChange={ this.handleChange }>
+          </input>
         </div>
       );
     }
@@ -53,7 +53,9 @@ export default class Question extends React.Component {
 
   renderSubQuestion() {
     const subInputs = this.props.subInputs;
-    const unlockedQuestionIds = Object.keys(subInputs).filter(key => {
+    const subInputKeys = Object.keys(subInputs);
+
+    const unlockedQuestions = subInputKeys.filter(key => {
         const condition = subInputs[key].condition[0];
         const validResponse = subInputs[key].condition[1];
         const answer = this.state.answer;
@@ -71,7 +73,7 @@ export default class Question extends React.Component {
       }
     );
 
-    return unlockedQuestionIds.map(idx => (
+    return unlockedQuestions.map(idx => (
       <Question
         key={ idx }
         question={ subInputs[idx].question }
