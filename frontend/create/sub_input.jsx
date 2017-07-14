@@ -8,7 +8,7 @@ export default class SubInput extends React.Component {
       condition: this.props.condition,
       type: this.props.type,
       subInputs: this.props.subInputs,
-      lineage: this.props.lineage,
+      ancestor: this.props.ancestor,
       form: JSON.parse(localStorage.getItem('form'))
     };
     this.handleChange = this.handleChange.bind(this);
@@ -16,32 +16,47 @@ export default class SubInput extends React.Component {
     this.deleteSubInput = this.deleteSubInput.bind(this);
   }
 
-  handleChange(e, f, lineage = this.state.lineage, form = JSON.parse(localStorage.getItem('form'))) {
-    const field = e.currentTarget.className;
+  handleChange(e, fnc, ancestor = this.state.ancestor, form = JSON.parse(localStorage.getItem('form'))) {
     const value = e.currentTarget.value;
 
-    if (lineage.length === 1) {
+    if (ancestor.length === 1) {
       let condition = this.state.condition;
 
-      if (field === "question") {
-        form[lineage[0]].question = value;
-
-      } else if (field === "condition") {
-        condition[0] = value;
-        form[lineage[0]].condition = condition;
-
-      } else if (field === "condition-value") {
-        condition[1] = value;
-        form[lineage[0]].condition = condition;
-
-      } else {
-        form[lineage[0]].type = value;
+      switch (e.currentTarget.className) {
+        case "question":
+          form[ancestor[0]].question = value;
+          break;
+        case "condition":
+          condition[0] = value;
+          form[ancestor[0]].condition = condition;
+          break;
+        case "condition-value":
+          condition[1] = value;
+          form[ancestor[0]].condition = condition;
+          break;
+        default:
+          form[ancestor[0]].type = value;
       }
+      //
+      // if (field === "question") {
+      //   form[ancestor[0]].question = value;
+      //
+      // } else if (field === "condition") {
+      //   condition[0] = value;
+      //   form[ancestor[0]].condition = condition;
+      //
+      // } else if (field === "condition-value") {
+      //   condition[1] = value;
+      //   form[ancestor[0]].condition = condition;
+      //
+      // } else {
+      //   form[ancestor[0]].type = value;
+      // }
 
       return form;
 
     } else {
-      form[lineage[0]].subInputs = this.handleChange(e, f, lineage.slice(1), form[lineage[0]].subInputs);
+      form[ancestor[0]].subInputs = this.handleChange(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
     this.setState({ form });
@@ -49,18 +64,19 @@ export default class SubInput extends React.Component {
     return form;
   }
 
-  addSubInput(e, f, lineage = this.state.lineage, form = JSON.parse(localStorage.getItem('form'))) {
-    if (lineage.length === 1) {
-      let subInputsIds = Object.keys(this.state.subInputs);
-      const subInputId = (subInputsIds[subInputsIds.length - 1] === undefined) ? 0 : parseInt(subInputsIds[subInputsIds.length - 1]) + 1;
+  addSubInput(e, fnc, ancestor = this.state.ancestor, form = JSON.parse(localStorage.getItem('form'))) {
+    if (ancestor.length === 1) {
+      const subInputsKeys = Object.keys(this.state.subInputs);
+      const prevSubInputIdx = subInputsKeys[subInputsKeys.length - 1];
+      const subInputIdx = parseInt(prevSubInputIdx) + 1 || 0;
+      const subInputs = this.state.subInputs;
 
-      let subInputs = this.state.subInputs;
-      subInputs[subInputId] = { condition: ["Equals", ""], question: "", type: "Text", subInputs: {} };
+      subInputs[subInputIdx] = { condition: ["Equals", ""], question: "", type: "Text", subInputs: {} };
       this.setState({ subInputs });
-      form[lineage[0]].subInputs[subInputId] = subInputs[subInputId];
+      form[ancestor[0]].subInputs[subInputIdx] = subInputs[subInputIdx];
       return form;
     } else {
-      form[lineage[0]].subInputs = this.addSubInput(e, f, lineage.slice(1), form[lineage[0]].subInputs);
+      form[ancestor[0]].subInputs = this.addSubInput(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
     this.setState({ form });
@@ -68,20 +84,19 @@ export default class SubInput extends React.Component {
     return form;
   }
 
-  deleteChild(subInputId) {
+  deleteChild(subInputIdx) {
     let subInputs = this.state.subInputs;
-    delete subInputs[subInputId];
+    delete subInputs[subInputIdx];
     this.setState({ subInputs });
   }
 
-  deleteSubInput(e, f, lineage = this.state.lineage, form = JSON.parse(localStorage.getItem('form'))) {
-    if (lineage.length === 1) {
-      delete form[lineage[0]];
-      this.props.deleteSubInput(parseInt(lineage[0]));
+  deleteSubInput(e, fnc, ancestor = this.state.ancestor, form = JSON.parse(localStorage.getItem('form'))) {
+    if (ancestor.length === 1) {
+      delete form[ancestor[0]];
+      this.props.deleteSubInput(parseInt(ancestor[0]));
       return form;
-
     } else {
-      form[lineage[0]].subInputs = this.deleteSubInput(e, f, lineage.slice(1), form[lineage[0]].subInputs);
+      form[ancestor[0]].subInputs = this.deleteSubInput(e, fnc, ancestor.slice(1), form[ancestor[0]].subInputs);
     }
 
     this.setState({ form });
@@ -90,14 +105,14 @@ export default class SubInput extends React.Component {
   }
 
   renderSubInputs() {
-    return Object.keys(this.state.subInputs).map(id => (
+    return Object.keys(this.state.subInputs).map(k => (
       <SubInput
-        key={ id }
-        question={ this.state.subInputs[id].question }
-        condition={ this.state.subInputs[id].condition }
-        type={ this.state.subInputs[id].type }
-        subInputs={ this.state.subInputs[id].subInputs }
-        lineage={ this.state.lineage.concat([id]) }
+        key={ k }
+        question={ this.state.subInputs[k].question }
+        condition={ this.state.subInputs[k].condition }
+        type={ this.state.subInputs[k].type }
+        subInputs={ this.state.subInputs[k].subInputs }
+        ancestor={ this.state.ancestor.concat([k]) }
         deleteSubInput={ this.deleteChild.bind(this) }
       />
     ));

@@ -1,0 +1,20 @@
+.preview-question {
+  left: 30px;
+  margin: 40px 0px 40px 0px;
+  font-size: 26px;
+}
+
+.preview-label {
+  margin-right: 50px;
+}
+
+.preview-radio {
+  margin: 30px 10px 0px 15px;
+}
+
+.preview-field {
+  font-size: 26px;
+  margin-top: 15px;
+  text-indent: 15px;
+  border: 2px solid rgb(151, 151, 151);
+}

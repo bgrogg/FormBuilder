@@ -70,7 +70,7 @@ export default class Input extends React.Component {
     return Object.keys(subInputs).map(k => (
       <SubInput
         key={ k }
-        lineage={ [this.props.inputIdx, k] }
+        ancestor={ [this.props.inputIdx, k] }
         condition={ subInputs[k].condition }
         question={ subInputs[k].question }
         type={ subInputs[k].type }

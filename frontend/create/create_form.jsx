@@ -19,7 +19,7 @@ export default class CreateForm extends React.Component {
 
   //
   addInput() {
-    const form = JSON.parse(localStorage.getItem('form'));
+    const form = JSON.parse(localStorage.getItem('form')) || this.state.form;
     const inputs = Object.keys(form);
     const prevIdx = inputs[inputs.length - 1];
     const currentIdx = parseInt(prevIdx) + 1 || 0;

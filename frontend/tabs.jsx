@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CreateForm from './create/create_form';
-// import PreviewForm from './preview/preview_form';
+import PreviewForm from './preview/preview_form';
 // import ExportForm from './export/export_form';
 
 class Headers extends React.Component {
@@ -47,7 +47,7 @@ export default class Tabs extends React.Component {
     if (this.state.selectedPane === 0) {
       return <CreateForm />;
     } else if (this.state.selectedPane === 1) {
-      return "PreviewForm";
+      return <PreviewForm />;
     } else {
       return "ExportForm";
     }
