@@ -1,8 +1,8 @@
 import React from 'react';
 
-// import CreateTab from './create/create_tab';
-// import PreviewTab from './preview/preview_tab';
-// import ExportTab from './export/export_tab';
+import CreateForm from './create/create_form';
+// import PreviewForm from './preview/preview_form';
+// import ExportForm from './export/export_form';
 
 class Headers extends React.Component {
   render() {
@@ -31,7 +31,8 @@ class Headers extends React.Component {
   }
 }
 
-export default class Tab extends React.Component {
+
+export default class Tabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {selectedPane: 0 }
@@ -42,13 +43,13 @@ export default class Tab extends React.Component {
     this.setState({selectedPane: num});
   }
 
-  renderTab() {
+  renderTabs() {
     if (this.state.selectedPane === 0) {
-      return "CreateContent";
+      return <CreateForm />;
     } else if (this.state.selectedPane === 1) {
-      return "PreviewContent";
+      return "PreviewForm";
     } else {
-      return "ExportContent";
+      return "ExportForm";
     }
   }
 
@@ -56,14 +57,14 @@ export default class Tab extends React.Component {
     let pane = this.props.panes[this.state.selectedPane];
 
     return (
-      <main>
+      <div>
         <Headers
           selectedPane={this.state.selectedPane}
           onTabChosen={this.selectTab}
           panes={this.props.panes}>
         </Headers>
-        { this.renderTab() }
-      </main>
+        { this.renderTabs() }
+      </div>
     );
   }
 }

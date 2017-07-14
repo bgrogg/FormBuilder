@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Tab from './tab'
+import Tabs from './tabs'
 
 const Panes = [
 	{title: 'Create'},
@@ -14,7 +14,7 @@ class Root extends React.Component {
 		return (
 			<main>
 				<h1>Form Builder</h1>
-				<Tab panes={Panes} />
+				<Tabs panes={Panes} />
 			</main>
 		);
 	}
