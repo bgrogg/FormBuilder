@@ -1,11 +1,11 @@
 /*create_forms*/
 
-.button:hover {
+.btn:hover {
   cursor: pointer;
   background-color: gray;
 }
 
-.button {
+.btn {
   border: 2px solid gray;
   padding: 10px;
   background-color: lightgray;
@@ -56,13 +56,13 @@
   text-indent: 5px;
 }
 
-.input-buttons {
+.input-btns {
   display: flex;
   justify-content: flex-end;
   margin: 10px 5px 0px 0px;
 }
 
-.input-buttons > li {
+.input-btns > li {
   margin: 15px 0px 0px 30px;
   font-size: 22px;
   width: 150px;

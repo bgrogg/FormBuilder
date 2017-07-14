@@ -9,7 +9,7 @@ export default class CreateForm extends React.Component {
     this.renderInputs = this.renderInputs.bind(this);
   }
 
-//componentWillMount(before initial render) vs. componentDidMount(after)?
+  //fetches data before initial render
   componentWillMount() {
     const prev = JSON.parse(localStorage.getItem('form'));
     if (prev) {
@@ -17,32 +17,40 @@ export default class CreateForm extends React.Component {
     }
   }
 
-  //
+  //creates new input object in localStorage 'form' then updates state
   addInput() {
     const form = JSON.parse(localStorage.getItem('form')) || this.state.form;
+
     const inputs = Object.keys(form);
     const prevIdx = inputs[inputs.length - 1];
-    const currentIdx = parseInt(prevIdx) + 1 || 0;
-    form[currentIdx] = { question: "", type: "Text", subInputs: {} };
+    const currentIdx = parseInt(prevIdx) + 1 || 0; //'0' in the event there are no prevIdx (i.e. prevIdx == undefined)
+
+    form[currentIdx] = {
+      question: "",
+      type: "Text",
+      subInputs: {}
+    };
+
     localStorage.setItem('form', JSON.stringify(form));
     this.setState({ form });
-    // console.log(inputs);
-    // console.log(this.state.form);
   }
 
+  //passes state data to input component via props, to reset state post-delete
   deleteChild(form) {
     this.setState({ form });
   }
 
+  //renders each input component using 'form' keys as unique identifier
   renderInputs() {
     const form = this.state.form;
-    return Object.keys(form).map(k =>
+
+    return Object.keys(form).map(key =>
       <Input
-        key={ k }
-        inputIdx={ k }
-        question={ form[k].question }
-        type={ form[k].type }
-        subInputs={ form[k].subInputs }
+        key={ key }
+        inputIdx={ key }
+        question={ form[key].question }
+        type={ form[key].type }
+        subInputs={ form[key].subInputs }
         deleteInput={ this.deleteChild.bind(this) }
       />);
   }
@@ -53,7 +61,7 @@ export default class CreateForm extends React.Component {
         { this.renderInputs() }
         <button
           id="add-input"
-          className="button"
+          className="btn"
           onClick={ this.addInput.bind(this) }>
           Add Input
         </button>

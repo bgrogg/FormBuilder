@@ -37,21 +37,6 @@ export default class SubInput extends React.Component {
         default:
           form[ancestor[0]].type = value;
       }
-      //
-      // if (field === "question") {
-      //   form[ancestor[0]].question = value;
-      //
-      // } else if (field === "condition") {
-      //   condition[0] = value;
-      //   form[ancestor[0]].condition = condition;
-      //
-      // } else if (field === "condition-value") {
-      //   condition[1] = value;
-      //   form[ancestor[0]].condition = condition;
-      //
-      // } else {
-      //   form[ancestor[0]].type = value;
-      // }
 
       return form;
 
@@ -159,15 +144,15 @@ export default class SubInput extends React.Component {
               <option>Yes / No</option>
             </select>
           </div>
-          <div className="input-buttons">
+          <div className="input-btns">
             <li
               onClick={ this.addSubInput }
-              className="button">
+              className="btn">
               Add Sub-Input
             </li>
             <li
               onClick={ this.deleteSubInput }
-              className="button">
+              className="btn">
               Delete
             </li>
           </div>

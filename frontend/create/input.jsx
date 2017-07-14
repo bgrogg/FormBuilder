@@ -10,17 +10,14 @@ export default class Input extends React.Component {
       type: this.props.type,
       subInputs: this.props.subInputs
     };
+
     this.handleChange = this.handleChange.bind(this);
   }
 
-  deleteChild(subInputIdx) {
-    const subInputs = this.state.subInputs;
-    delete subInputs[subInputIdx];
-    this.setState({ subInputs });
-  }
-
+  //updates state and localStorage using event handlers from onChange attribute
   handleChange(e) {
     const value = e.currentTarget.value;
+
     const form = JSON.parse(localStorage.getItem('form'));
     const inputIdx = this.props.inputIdx;
 
@@ -30,6 +27,7 @@ export default class Input extends React.Component {
         type: this.state.type,
         subInputs: this.state.subInputs
       };
+
       this.state.question = value;
     } else {
       form[inputIdx] = {
@@ -37,12 +35,14 @@ export default class Input extends React.Component {
         type: value,
         subInputs: this.state.subInputs
       };
+
       this.state.type = value;
     }
 
     localStorage.setItem('form', JSON.stringify(form));
-    let { type, question, subInputs } = form[inputIdx];
-    this.setState({ type, question, subInputs });
+    this.setState( form[inputIdx] );
+
+    // const { type, question, subInputs } = form[inputIdx];
   }
 
   addSubInput() {
@@ -88,6 +88,12 @@ export default class Input extends React.Component {
     this.props.deleteInput(form);
   }
 
+  deleteChild(subInputIdx) {
+    const subInputs = this.state.subInputs;
+    delete subInputs[subInputIdx];
+    this.setState({ subInputs });
+  }
+
   render() {
     return (
       <section>
@@ -111,15 +117,15 @@ export default class Input extends React.Component {
               <option>Yes / No</option>
             </select>
           </div>
-          <div className="input-buttons">
+          <div className="input-btns">
             <li
               onClick={ this.addSubInput.bind(this) }
-              className="button">
+              className="btn">
               Add Sub-Input
             </li>
             <li
               onClick={ this.deleteSubInput.bind(this) }
-              className="button">
+              className="btn">
               Delete
             </li>
           </div>
