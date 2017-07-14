@@ -41,7 +41,7 @@ export default class Question extends React.Component {
     } else {
       return <div>
         <input
-          className="preview-field"
+          className="preview-response"
           type="text"
           onChange={ this.handleChange }
           ></input>

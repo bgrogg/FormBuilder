@@ -11,9 +11,9 @@ export default class CreateForm extends React.Component {
 
 //componentWillMount(before initial render) vs. componentDidMount(after)?
   componentWillMount() {
-    const oldForm = JSON.parse(localStorage.getItem('form'));
-    if (oldForm) {
-      this.setState({ form: oldForm });
+    const prev = JSON.parse(localStorage.getItem('form'));
+    if (prev) {
+      this.setState({ form: prev });
     }
   }
 
